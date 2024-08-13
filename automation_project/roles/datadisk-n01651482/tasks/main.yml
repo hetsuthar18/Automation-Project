@@ -1,0 +1,23 @@
+---
+- name: Create partitions and filesystems
+  parted:
+    device: /dev/sdb
+    number: "{{ item.number }}"
+    state: present
+    part_type: primary
+    fs_type: "{{ item.fs_type }}"
+    start: "{{ item.start }}"
+    end: "{{ item.end }}"
+  with_items:
+    - { number: 1, fs_type: xfs, start: 0%, end: 40% }
+    - { number: 2, fs_type: ext4, start: 40%, end: 100% }
+
+- name: Mount partitions
+  mount:
+    path: "{{ item.path }}"
+    src: "/dev/sdb{{ item.number }}"
+    fstype: "{{ item.fstype }}"
+    state: mounted
+  with_items:
+    - { number: 1, path: /part1, fstype: xfs }
+    - { number: 2, path: /part2, fstype: ext4 }

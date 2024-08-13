@@ -1,0 +1,6 @@
+---
+- name: Append lines to /etc/profile
+  lineinfile:
+    path: /etc/profile
+    line: "#Test block added by Ansible by n01651482\nexport TMOUT=1500"
+    state: present

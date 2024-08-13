@@ -1,0 +1,17 @@
+---
+- name: Add group cloudadmins
+  group:
+    name: cloudadmins
+    state: present
+
+- name: Add users
+  user:
+    name: "{{ item }}"
+    groups: cloudadmins,wheel
+    state: present
+    generate_ssh_key: yes
+    ssh_key_file: "/home/{{ item }}/.ssh/id_rsa"
+  with_items:
+    - user100
+    - user200
+    - user300
